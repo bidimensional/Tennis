@@ -49,7 +49,7 @@ Environment solved in 2580 episodes!	Average Score: 0.501
 ```
 ![graph]
 
-[graph]: https://github.com/bidimensional/Continuous-Control/blob/main/concontrol.png?raw=true
+[graph]: https://github.com/bidimensional/Tennis/blob/main/tennis-plot.png
 
 
 ### Model Architecture
@@ -64,7 +64,7 @@ Activation function is ReLU in the Actor and LeakyRELU for the critic, I came up
 I also used Batch normalisation as it was suggested as a good way to improve learning.
 
 ### Learning algorithm
-The agent learns maximising the reward at each episode using an Actor Critic method implemented through 2 Neural Netowrks. Adam is used as an optimizer using the LR specified below.
+The agent learns maximising the reward at each episode using an Actor Critic method implemented through 2 Neural Netowrks. Adam is used as an optimizer using the LR specified below. In this Multi-Agent scenario there are 2 Agents and a single critic which learning is shared.
 
 The training creates an **actor.pth** and a **critic.pth** when successful that can be used to restore the weights in the neural network at later stage to let the agent interact with the world.
 
