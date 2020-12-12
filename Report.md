@@ -64,35 +64,32 @@ Activation function is ReLU in the Actor and LeakyRELU for the critic, I came up
 I also used Batch normalisation as it was suggested as a good way to improve learning.
 
 ### Learning algorithm
-The agent learns maximising the reward at each episode using an Actor Critic method implemented through 2 Neural Netowrks. Adam is used as an optimizer using the LR specified below. In this Multi-Agent scenario there are 2 Agents and a single critic which learning is shared.
+The agent learns maximising the reward at each episode using an Actor Critic method implemented through 2 Neural Netowrks. Adam is used as an optimizer using the LR specified below. In this Multi-Agent scenario there are 2 Agents each one with his own Critic.
+Even though I am using a target network to keep the learning more stable, in practice I do 1 pass of learning at every step as I found that this worked way better.
 
-The training creates an **actor.pth** and a **critic.pth** when successful that can be used to restore the weights in the neural network at later stage to let the agent interact with the world.
+Actions are concatenated and sent to the environment and each agent learns according to the reward it receives as a consequence of its actions.
 
 ### Hyperparameters
-These are the parameters I used. The model appears very susceptible to variation of these.
+These are the parameters I used. The model appears very susceptible to variation of these and sometime in a counterintuitive way.
 
 ### Agent
 ```
-BUFFER_SIZE = int(1e6)  # replay buffer size \
-BATCH_SIZE = 128        # minibatch size, i tried multiple values, this worked ok \
-GAMMA = 0.99            # discount factor, from https://arxiv.org/pdf/1509.02971.pdf \
-TAU = 1e-3              # for soft update of target parameters from https://arxiv.org/pdf/1509.02971.pdf \
-LR_ACTOR = 1e-3         # I didn't use the value from the paper, but a value 10 time larger and it worked ok \
-LR_CRITIC = 1e-3        # Larning rate of the critic from https://arxiv.org/pdf/1509.02971.pdf \
-WEIGHT_DECAY = 0        # L2 weight decay from - using 0 rather than value found in the paper as learning was a problem \
-UPDATE_EVERY = 20       # timesteps between updates, I found this suggestion in the Udacity comments and worked well \
-NUM_UPDATES = 1         # num of update passes when updating, I found this suggestion in the Udacity comments and worked well \
-EPSILON_DECAY = 1e-6    # decay for epsilon above
-```
-### Training
-```
-n_episodes=600 \
-steps_per_epidoes=1000
+BUFFER_SIZE = int(1e6)  # replay buffer size
+BATCH_SIZE = 128        # minibatch size, i tried multiple values, this worked ok
+GAMMA = 0.99            # discount factor, 
+TAU = 8e-3              # for soft update of target parameters 
+LR_ACTOR = 1e-3         # learning rate of the actor 
+LR_CRITIC = 1e-3        # learning rate of the critic 
+WEIGHT_DECAY = 0        # L2 weight decay from -
+UPDATE_EVERY = 1        # The agents do 1 pass of learning each step. This worked well in practice.
+NUM_UPDATES = 1         # 
+EPSILON_DECAY = 1e-5    # decay for epsilon above
+EPS_START = 5           # starting value 
+EPS_FINAL = 0.05        # lowest value for eps
 ```
 
 ### Future research
-- Fine tune the Hyperparameters, in particular the size and depth of the neural networks to see how they impact the learning and how batch normalization is used.
-- Adopt Trust Region Policy Optimization (TRPO) or Truncated Natural Policy Gradient (TNPG) and compare the results
-- Try the Distributed Distributional Deterministic Policy Gradients (D4PG) algorithm as another method for adapting DDPG for continuous control.
-
+- I found that there is too much variability in the performance of this algorithm with small changes of the hyperparameters. Before adding any further complication to this architecture, one should understand better why is that occurring. 
+- I eventually settled for neural networks with 2 hidden layers of 400 and 300 neurons as in the DDPG paper, but I also found that network way smaller (64 and 32) actually learned quite well, at least at the beginning. Given that smaller networks require less computation, one should understand what is really needed to learn this to better isolate the effect of all the hyperparameters.
+- I settled to learn once at every step, even if this is supposed to perform less well than updating the same less often. In the single agent Continuous Control, this worked well, but in this one I wasn't able to learn at all. This should be understood, based on my search people have found that doing multiple pass of learning every step performs even better. A better theory around how this impact learning is needed.
 
