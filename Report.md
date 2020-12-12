@@ -55,7 +55,7 @@ Environment solved in 2580 episodes!	Average Score: 0.501
 ### Model Architecture
 The model architecture for the DDPG I implemented is based on the findings of the original research paper at the following address: https://arxiv.org/pdf/1509.02971.pdf
 
-Actor and Critic have 2 hidden layers with 400 and 300 neurons each as suggested by the paper.
+Actor and Critic are neural network with 2 Fully Connected hidden layers, with 400 and 300 neurons each, as suggested by the paper.
 
 In line with the same I initialized the weights from a normal distribution and I add noise using the Ornstein-Uhlenbeck process to maintain exploration.
 
