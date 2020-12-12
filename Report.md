@@ -4,22 +4,47 @@
 
 This is my implementation to solve the Tennis project on the Udacity Reinforcement Learning Nanodegree. 
 
-In this environment, a double-jointed arm can move to target locations. A reward of +0.1 is provided for each step that the agent's hand is in the goal location. Thus, the goal of your agent is to maintain its position at the target location for as many time steps as possible.
+In this environment, two agents control rackets to bounce a ball over a net. If an agent hits the ball over the net, it receives a reward of +0.1. If an agent lets a ball hit the ground or hits the ball out of bounds, it receives a reward of -0.01. Thus, the goal of each agent is to keep the ball in play.
 
-The observation space consists of 33 variables corresponding to position, rotation, velocity, and angular velocities of the arm. Each action is a vector with four numbers, corresponding to torque applicable to two joints. Every entry in the action vector should be a number between -1 and 1.
+The observation space consists of 8 variables corresponding to the position and velocity of the ball and racket. Each agent receives its own, local observation. Two continuous actions are available, corresponding to movement toward (or away from) the net, and jumping.
 
-The task is a continuous task, and in order to solve the environment, your agent must get an average score of 30 over 100 consecutive episodes.
+The task is episodic, and in order to solve the environment, your agents must get an average score of +0.5 (over 100 consecutive episodes, after taking the maximum over both agents). Specifically,
 
-This has been implemented using a Deep Deterministic Policy Gradients (DDPG) algorithm illustrated here: https://arxiv.org/pdf/1509.02971.pdf
+After each episode, we add up the rewards that each agent received (without discounting), to get a score for each agent. This yields 2 (potentially different) scores. We then take the maximum of these 2 scores.
+This yields a single score for each episode.
+The environment is considered solved, when the average (over 100 episodes) of those scores is at least +0.5.
+
+This has been implemented using a Multi Agent Deep Deterministic Policy Gradients (MADDPG), a variation of the algorithm illustrated here: https://arxiv.org/pdf/1509.02971.pdf 
 
 ### My results
 ```
-Episode 100	Average Score: 3.622
-Episode 200	Average Score: 10.811
-Episode 300	Average Score: 19.244
-Episode 400	Average Score: 26.500
-Episode 455, Average Score: 30.12
-Environment solved in 455 episodes!	Average Score: 30.12
+Episode: 100.000 Average Score: 0.009
+Episode: 200.000 Average Score: 0.060
+Episode: 300.000 Average Score: 0.061
+Episode: 400.000 Average Score: 0.073
+Episode: 500.000 Average Score: 0.091
+Episode: 600.000 Average Score: 0.090
+Episode: 700.000 Average Score: 0.108
+Episode: 800.000 Average Score: 0.139
+Episode: 900.000 Average Score: 0.148
+Episode: 1000.000 Average Score: 0.154
+Episode: 1100.000 Average Score: 0.162
+Episode: 1200.000 Average Score: 0.201
+Episode: 1300.000 Average Score: 0.194
+Episode: 1400.000 Average Score: 0.195
+Episode: 1500.000 Average Score: 0.212
+Episode: 1600.000 Average Score: 0.235
+Episode: 1700.000 Average Score: 0.289
+Episode: 1800.000 Average Score: 0.296
+Episode: 1900.000 Average Score: 0.343
+Episode: 2000.000 Average Score: 0.306
+Episode: 2100.000 Average Score: 0.360
+Episode: 2200.000 Average Score: 0.373
+Episode: 2300.000 Average Score: 0.416
+Episode: 2400.000 Average Score: 0.339
+Episode: 2500.000 Average Score: 0.425
+Episode 2580.000, Average Score: 0.501
+Environment solved in 2580 episodes!	Average Score: 0.501
 
 ```
 ![graph]
